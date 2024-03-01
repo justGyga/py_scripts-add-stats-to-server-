@@ -2,6 +2,7 @@ from random import randint
 import psycopg2
 import datetime as DT
 import configparser
+from tqdm import tqdm
 
 
 def getConfigsParser():
@@ -42,7 +43,7 @@ def postDataOnPOSTGRESS(connection, data):
     cursor = connection.cursor()
     sql_command = 'INSERT INTO \"adapter-statistic\"(wattage, volt, temperature, "createdAt", "adapterId") VALUES(%s,%s,%s,%s,%s)'
     try:
-        for step_string in data:
+        for step_string in tqdm(data):
             cursor.execute(sql_command, (
                 step_string["wattage"], step_string['volt'], step_string["temperature"], step_string["createdAt"],
                 step_string["adapterId"]))
